@@ -6,7 +6,7 @@
 package org.usfirst.frc.team6071.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Spark;
 
 
 
@@ -16,8 +16,10 @@ public class Robot extends IterativeRobot {
 	final int joystickLeftPort = 0;
 	final int joystickRightPort = 1;
 	
-	final Joystick joystickLeft = new Joystick(joystickLeftPort);
-	final Joystick joystickRight = new Joystick(joystickRightPort);
+	final Spark motorLeft0 = new Spark(0);
+	final Spark motorLeft1 = new Spark(1);
+	final Spark motorLeft2 = new Spark(2);
+	final Spark motorLeft3 = new Spark(3);
 	
 	// Auton Variables.
 	
