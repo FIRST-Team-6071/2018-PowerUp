@@ -25,7 +25,11 @@ public class Robot extends IterativeRobot {
 	
 	
 	
-	// TeleOp Variables.
+	// TeleOp Variables. 
+	public Joystick leftJoy = new Joystick(0);
+	public Joystick rightJoy = new Joystick(1);
+}
+	
 	
 	
 	
@@ -39,4 +43,34 @@ public class Robot extends IterativeRobot {
 
 
 }
-
+    public void teleopPeriodic() {
+    	
+    	    double leftJoy = joystickLeft.getRawAxis(1);
+    	    double rightJoy = joystickRight.getRawAxis(1);
+    	    
+    	    double speedDriveL = 0;
+    	    double speedDriveR = 0;
+    	    
+    	    if (leftJoy < 0) {
+    	    	    speedDriveL = leftJoy * leftJoy * -1;
+    	    }
+    	    if (leftJoy >= 0) {
+    	    	    speedDriveL = leftJoy * leftJoy;
+    	    }
+    	    
+    	    if (rightJoy < 0) {
+    	    	    speedDriveR = rightJoy * rightJoy * -1;
+    	    }
+    	    if (rightJoy >= 0) {
+    	    	    speedDriveR = rightJoy * rightJoy;
+    	    }
+    	    
+    	    robot.DriveL(-leftJoy);
+    	    robot.DriveR(rightJoy);
+    	    
+    	    }
+    	    
+    }
+          
+         
+        if ()
