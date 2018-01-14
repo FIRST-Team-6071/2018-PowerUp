@@ -6,6 +6,7 @@
 package org.usfirst.frc.team6071.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Spark;
 
 
@@ -16,10 +17,9 @@ public class Robot extends IterativeRobot {
 	final int joystickLeftPort = 0;
 	final int joystickRightPort = 1;
 	
-	final Spark motorLeft0 = new Spark(0);
-	final Spark motorLeft1 = new Spark(1);
-	final Spark motorLeft2 = new Spark(2);
-	final Spark motorLeft3 = new Spark(3);
+	final Spark motorsLeft = new Spark(0);
+	final Spark motorsRight = new Spark(1);
+	
 	
 	// Auton Variables.
 	
@@ -28,7 +28,7 @@ public class Robot extends IterativeRobot {
 	// TeleOp Variables. 
 	public Joystick leftJoy = new Joystick(0);
 	public Joystick rightJoy = new Joystick(1);
-}
+
 	
 	
 	
@@ -38,39 +38,25 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void robotInit() {
-		
-	}
 
-
-}
+	}	
+	
     public void teleopPeriodic() {
     	
-    	    double leftJoy = joystickLeft.getRawAxis(1);
-    	    double rightJoy = joystickRight.getRawAxis(1);
-    	    
-    	    double speedDriveL = 0;
-    	    double speedDriveR = 0;
-    	    
-    	    if (leftJoy < 0) {
-    	    	    speedDriveL = leftJoy * leftJoy * -1;
-    	    }
-    	    if (leftJoy >= 0) {
-    	    	    speedDriveL = leftJoy * leftJoy;
-    	    }
-    	    
-    	    if (rightJoy < 0) {
-    	    	    speedDriveR = rightJoy * rightJoy * -1;
-    	    }
-    	    if (rightJoy >= 0) {
-    	    	    speedDriveR = rightJoy * rightJoy;
-    	    }
-    	    
-    	    robot.DriveL(-leftJoy);
-    	    robot.DriveR(rightJoy);
-    	    
-    	    }
-    	    
+    	double leftJoyVal = leftJoy.getRawAxis(1);
+		double rightJoyVal = rightJoy.getRawAxis(1);
+		
+		if (leftJoyVal < 0) {
+			motorsLeft.setSpeed(leftJoyVal * leftJoyVal * -1);
+		}
+		if (leftJoyVal >= 0) {
+			motorsLeft.setSpeed(leftJoyVal * leftJoyVal);
+		}
+		if (rightJoyVal < 0) {
+			motorsRight.setSpeed(rightJoyVal * rightJoyVal * -1);
+		}
+		if (rightJoyVal >= 0) {
+			motorsRight.setSpeed(rightJoyVal * rightJoyVal);
+		}
     }
-          
-         
-        if ()
+}
