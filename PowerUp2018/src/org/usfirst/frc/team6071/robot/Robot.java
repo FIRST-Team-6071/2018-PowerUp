@@ -22,7 +22,8 @@ public class Robot extends IterativeRobot {
 	final Spark mtrVert = new Spark(4);
 	
 	// Auton Variables.
-	private Alliance al;
+	public int staNumber = 1;
+	public String arcadeLayout;
 	
 	
 	// TeleOp Variables.
@@ -34,9 +35,11 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void autonomousInit() {
-		
+	
 	}
-
+	
+	
+	@Override
 	public void autonomousPeriodic() {
 		
 	}
