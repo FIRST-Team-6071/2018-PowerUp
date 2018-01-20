@@ -59,12 +59,12 @@ public class Robot extends IterativeRobot {
 			mtrRight.setSpeed(rightJoyVal * rightJoyVal);
 		}
 		if (rightJoy.getRawButton(1)) {
-			mtrGrabLeft.setSpeed(1);
-			mtrGrabLeft.setSpeed(1);
+			mtrGrabLeft.setSpeed(0.3);
+			mtrGrabRight.setSpeed(0.3);
 		}
 		if (leftJoy.getRawButton(1)) {
-			mtrGrabLeft.setSpeed(-0.5);
-			mtrGrabRight.setSpeed(-0.5);
+			mtrGrabLeft.setSpeed(-0.3);
+			mtrGrabRight.setSpeed(-0.3);
 		}
 		if (rightJoy.getRawButton(3)) {
 			mtrVertical.setSpeed(1);
