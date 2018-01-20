@@ -26,7 +26,7 @@ public class Robot extends IterativeRobot {
 	// Auton Variables.
 	public int staNumber = 1;
 	public String arcadeLayout;
-	
+	public boolean isOverride = false;
 	
 	// TeleOp Variables. 
 	public Joystick leftJoy = new Joystick(0);
@@ -34,15 +34,55 @@ public class Robot extends IterativeRobot {
 
 	
 	
-	
-	
-	
+
+	@Override
+	public void autonomousInit() {
+		// Add station code here;
+		// Check for override;
+	}
 	
 	
 	@Override
-	public void robotInit() {
+	public void autonomousPeriodic() {
+		if (staNumber == 1) {
+			
+		}
+		if (staNumber == 2) {
+			
+		}
+		if (staNumber == 3) {
+			
+		}
+	}
 
-	}	
+	private void PassLine() {
+		
+	}
+	
+	private void LeftSwitch() {
+		
+	}
+	
+	private void LeftScale() {
+		
+	}
+	
+	private void CenterRightSwitch() {
+		
+	}
+	
+	private void CenterLeftSwitch() {
+		
+	}
+	
+	private void RightSwitch() {
+		
+	}
+
+	private void RightScale() {
+		
+	}
+}
 	
     public void teleopPeriodic() {
     	
