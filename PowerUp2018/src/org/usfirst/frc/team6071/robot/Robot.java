@@ -7,22 +7,22 @@ package org.usfirst.frc.team6071.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 
 
 public class Robot extends IterativeRobot {
 	
 	// Common Variables
-	final int joystickLeftPort = 0;
-	final int joystickRightPort = 1;
-	
-	final Spark motorLeft0 = new Spark(0);
-	final Spark motorLeft1 = new Spark(1);
-	final Spark motorLeft2 = new Spark(2);
-	final Spark motorLeft3 = new Spark(3);
+	final Spark mtrLeft = new Spark(0);
+	final Spark mtrRight = new Spark(1);
+	final Spark mtrGrabLeft = new Spark(2);
+	final Spark mtrGrabRight = new Spark(3);
+	final Spark mtrVert = new Spark(4);
 	
 	// Auton Variables.
-	
+	private Alliance al;
 	
 	
 	// TeleOp Variables.
@@ -33,10 +33,13 @@ public class Robot extends IterativeRobot {
 	
 	
 	@Override
-	public void robotInit() {
+	public void autonomousInit() {
 		
 	}
 
+	public void autonomousPeriodic() {
+		
+	}
 
 }
 
