@@ -21,10 +21,7 @@ public class Robot extends IterativeRobot {
 	final Spark mtrGrabLeft = new Spark(2);
 	final Spark mtrGrabRight = new Spark(3);
 	final Spark mtrVertical = new Spark(4);
-	
-	// Setup encoders for the Encoder() type and CAN. Make sure these match up with your 
-	// opposing branch so when we go to the testing phaze we don't get screwed with naming. 
-	
+
 	// Auton Variables.
 	public int staNumber = 1;
 	public String arcadeLayout;
