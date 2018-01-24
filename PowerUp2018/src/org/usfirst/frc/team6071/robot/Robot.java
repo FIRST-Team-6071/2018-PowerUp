@@ -5,6 +5,8 @@
 
 package org.usfirst.frc.team6071.robot;
 
+import com.ctre.phoenix.motorcontrol.*;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Spark;
