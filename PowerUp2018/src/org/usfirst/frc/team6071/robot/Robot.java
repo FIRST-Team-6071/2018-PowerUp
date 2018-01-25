@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot {
 	
@@ -27,6 +29,11 @@ public class Robot extends IterativeRobot {
 	public String arcadeLayout;
 	public boolean isOverride = false;
 	public DriverStation ds;
+	public String orChosenAuto;
+	
+	//Auton Choices
+	SendableChooser<String> chooser = new SendableChooser<>();
+	final String autoOverrideDisable = "Don't override";
 	
 	// TeleOp Variables. 
 	public Joystick leftJoy = new Joystick(0);
@@ -34,6 +41,9 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void robotInit() {
+		chooser.addObject("Disable Override", autoOverrideDisable);
+		SmartDashboard.putData("Auton choices", chooser);
+		
 		encMtrLeft.setMaxPeriod(.1); // Sets the max amount of time (seconds) in which it deems the motor still moving.
 		encMtrLeft.setMinRate(10); // Sets the minimum amount of ticks in which it deems the motor stopped.
 		encMtrLeft.setDistancePerPulse(5); // Just, it's a number. I don't really get it tbh...
@@ -52,29 +62,46 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		ds = DriverStation.getInstance();
-		// Check for override;
+		
+		try {
+		orChosenAuto = chooser.getSelected(); // See if the user is trying to override.
+		}
+		catch (Exception NullPointerException) {
+			System.out.println("AUTO HAS FAILED. NullPointerException! Check what you have selected...");
+		}
+		finally {
+			// autoSelected = autoCenter;
+			System.out.println("Ran the Finally statement for auto.");
+		}
 	}
 	
 	
 	@Override
 	public void autonomousPeriodic() {
 		
-		if (ds.isFMSAttached()){ // Run this code if you are at compition and connected to the field.
-			staNumber = ds.getLocation();
-			if (staNumber == 1) {
-				System.out.println("You are at station one.");
+		if (orChosenAuto == autoOverrideDisable) { // If override is disabled, run FMS code.
+			
+			if (ds.isFMSAttached()){ // Run this code if you are at compition and connected to the field.
+				staNumber = ds.getLocation();
+				if (staNumber == 1) {
+					System.out.println("You are at station one.");
+				}
+				if (staNumber == 2) {
+					System.out.println("You are at station two.");
+				}
+				if (staNumber == 3) {
+					System.out.println("You are at station three.");
+				}
 			}
-			if (staNumber == 2) {
-				System.out.println("You are at station two.");
+			
+			else {
+				System.out.println("ERROR: YOU ARE NOT CONNECTED TO FMS. PLEASE OVERRIDE!");
 			}
-			if (staNumber == 3) {
-				System.out.println("You are at station three.");
-			}
+			
 		}
-		else {
-			System.out.println("ERROR: YOU ARE NOT CONNECTED TO FMS. PLEASE OVERRIDE!");
+		else { // If override is enabled, run the selected option.
+			// Setup override options.
 		}
-		
 	}
 
 	private void PassLine() {
