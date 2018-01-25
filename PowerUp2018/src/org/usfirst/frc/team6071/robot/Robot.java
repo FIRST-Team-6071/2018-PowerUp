@@ -59,7 +59,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		
-		if (ds.isFMSAttached()){
+		if (ds.isFMSAttached()){ // Run this code if you are at compition and connected to the field.
 			staNumber = ds.getLocation();
 			if (staNumber == 1) {
 				System.out.println("You are at station one.");
@@ -71,6 +71,10 @@ public class Robot extends IterativeRobot {
 				System.out.println("You are at station three.");
 			}
 		}
+		else {
+			System.out.println("ERROR: YOU ARE NOT CONNECTED TO FMS. PLEASE OVERRIDE!");
+		}
+		
 	}
 
 	private void PassLine() {
