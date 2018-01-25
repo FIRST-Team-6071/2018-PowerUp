@@ -23,7 +23,6 @@ public class Robot extends IterativeRobot {
 	final Spark mtrGrabRight = new Spark(3);
 	final Spark mtrVertical = new Spark(4);
 
-	TalonSRX mtrAux = new TalonSRX(0); // Testing, kinda. Will be used for the AUX motor.
 	
 	// Auton Variables.
 	public int staNumber = 1; 
@@ -43,26 +42,10 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void robotInit() {
-		mtrAux.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
-		mtrAux.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+
 	}	
 	
     public void teleopPeriodic() {
-    	
-    	TmpDriveMethod(); // Made this real quick so we can test code easier. Then it dosen't get in the way bacuse
-    	// stupid eclipse dosen't have #region parameters...
-
-		/*
-		 * WARNING! TESTING CODE! NOT EDSIGNED TO GO INTO A FINAL BUILD!
-		 */
-		int rotMtrAux = mtrAux.getSensorCollection().getQuadraturePosition() % 4096; // Should give you an accurate representation of
-	    // how many rotations the motor has made.
-		if (leftJoy.getRawButton(7)) mtrAux.set(ControlMode.PercentOutput, 0.5d); // In theory should move the motor with 50% speed.
-		System.out.println("Rotations for mtrAux: " + rotMtrAux);
-		
-    }
-    
-    public void TmpDriveMethod() {
     	double leftJoyVal = leftJoy.getRawAxis(1);
 		double rightJoyVal = rightJoy.getRawAxis(1);
 		
