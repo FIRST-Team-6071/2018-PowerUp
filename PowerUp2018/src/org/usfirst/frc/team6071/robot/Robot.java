@@ -5,6 +5,7 @@
 
 package org.usfirst.frc.team6071.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -25,6 +26,7 @@ public class Robot extends IterativeRobot {
 	public int staNumber = 1;
 	public String arcadeLayout;
 	public boolean isOverride = false;
+	public DriverStation ds;
 	
 	// TeleOp Variables. 
 	public Joystick leftJoy = new Joystick(0);
@@ -49,21 +51,25 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousInit() {
-		// Add station code here;
+		ds = DriverStation.getInstance();
 		// Check for override;
 	}
 	
 	
 	@Override
 	public void autonomousPeriodic() {
-		if (staNumber == 1) {
-			
-		}
-		if (staNumber == 2) {
-			
-		}
-		if (staNumber == 3) {
-			
+		
+		if (ds.isFMSAttached()){
+			staNumber = ds.getLocation();
+			if (staNumber == 1) {
+				System.out.println("You are at station one.");
+			}
+			if (staNumber == 2) {
+				System.out.println("You are at station two.");
+			}
+			if (staNumber == 3) {
+				System.out.println("You are at station three.");
+			}
 		}
 	}
 
