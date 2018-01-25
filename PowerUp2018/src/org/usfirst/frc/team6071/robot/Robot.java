@@ -41,6 +41,7 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void robotInit() {
+		arcadeLayout = ds.getGameSpecificMessage();
 		chooser.addObject("Disable Override", autoOverrideDisable);
 		SmartDashboard.putData("Auton choices", chooser);
 		
@@ -81,7 +82,8 @@ public class Robot extends IterativeRobot {
 		
 		if (orChosenAuto == autoOverrideDisable) { // If override is disabled, run FMS code.
 			
-			if (ds.isFMSAttached()){ // Run this code if you are at compition and connected to the field.
+			if (ds.isFMSAttached()){ // Run this code if you are at comps and connected to the field.
+				System.out.println("The field layout is: " + arcadeLayout);
 				staNumber = ds.getLocation();
 				if (staNumber == 1) {
 					System.out.println("You are at station one.");
