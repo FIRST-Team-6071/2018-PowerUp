@@ -82,37 +82,4 @@ public class Robot extends IterativeRobot {
 		
 	}
 }
-	
-    public void teleopPeriodic() {
-    	
-    	double leftJoyVal = leftJoy.getRawAxis(1);
-		double rightJoyVal = rightJoy.getRawAxis(1);
-		
-		if (leftJoyVal < 0) {
-			mtrLeft.setSpeed(leftJoyVal * leftJoyVal * -1);
-		}
-		if (leftJoyVal >= 0) {
-			mtrLeft.setSpeed(leftJoyVal * leftJoyVal);
-		}
-		if (rightJoyVal < 0) {
-			mtrRight.setSpeed(rightJoyVal * rightJoyVal * -1);
-		}
-		if (rightJoyVal >= 0) {
-			mtrRight.setSpeed(rightJoyVal * rightJoyVal);
-		}
-		if (rightJoy.getRawButton(1)) {
-			mtrGrabLeft.setSpeed(0.3);
-			mtrGrabRight.setSpeed(0.3);
-		}
-		if (leftJoy.getRawButton(1)) {
-			mtrGrabLeft.setSpeed(-0.3);
-			mtrGrabRight.setSpeed(-0.3);
-		}
-		if (rightJoy.getRawButton(3)) {
-			mtrVertical.setSpeed(1);
-		}
-		if (leftJoy.getRawButton(4)) {
-			mtrVertical.setSpeed(-1);
-		}
-    }
-}
+
