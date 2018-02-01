@@ -8,6 +8,8 @@ package org.usfirst.frc.team6071.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 
 
@@ -19,10 +21,11 @@ public class Robot extends IterativeRobot {
 	final Spark mtrGrabLeft = new Spark(2);
 	final Spark mtrGrabRight = new Spark(3);
 	final Spark mtrVertical = new Spark(4);
-	
+
 	
 	// Auton Variables.
-	
+	public int staNumber = 1;
+	public String arcadeLayout;
 	
 	
 	// TeleOp Variables. 
