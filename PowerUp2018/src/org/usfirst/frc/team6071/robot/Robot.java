@@ -5,9 +5,11 @@
 
 package org.usfirst.frc.team6071.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 
 public class Robot extends IterativeRobot {
@@ -20,6 +22,8 @@ public class Robot extends IterativeRobot {
 	final Spark mtrVertical = new Spark(4);
 	final Encoder encMtrLeft = new Encoder(5,6); // Left side gearbox encoder.
 	final Encoder encMtrRight = new Encoder(7,8); // Right side gearbox encoder.
+	final Solenoid solBox = new Solenoid(1);
+	final Compressor compCube = new Compressor(0);
 
 	
 	// Auton Variables.
@@ -71,7 +75,7 @@ public class Robot extends IterativeRobot {
 			mtrGrabLeft.setSpeed(-0.2);
 			mtrGrabRight.setSpeed(-0.2);
 		}
-		if (rightJoy.getRawButon(5)) {
+		if (rightJoy.getRawButton(5)) {
 			mtrGrabLeft.setSpeed(1);
 			mtrGrabRight.setSpeed(1);
 		}
@@ -83,4 +87,13 @@ public class Robot extends IterativeRobot {
 		}
 		
     }
+	
+	private void ExtendPusher(boolean isPushed) {
+		if (isPushed) {
+			solBox.set(true);
+		}
+	    if (isPushed) {
+	    	solBox.set(false);
+	    }// Put solonoid true code here.
+	}
 }
