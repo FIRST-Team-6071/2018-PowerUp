@@ -5,10 +5,12 @@
 
 package org.usfirst.frc.team6071.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,6 +25,8 @@ public class Robot extends IterativeRobot {
 	final Spark mtrVertical = new Spark(4);
 	final Encoder encMtrLeft = new Encoder(5,6); // Left side gearbox encoder.
 	final Encoder encMtrRight = new Encoder(7,8); // Right side gearbox encoder.
+	final Compressor compCube = new Compressor(0);
+	final Solenoid solBox = new Solenoid(1);
 	
 	// Auton Variables.
 	public int staNumber = 1;
@@ -132,6 +136,15 @@ public class Robot extends IterativeRobot {
 
 	private void RightScale() {
 		
+	}
+	
+	private void ExtendPusher(boolean isPushed) {
+		if (isPushed) {
+			solBox.set(true);
+		}
+	    if (isPushed) {
+	    	solBox.set(false);
+	    }// Put solonoid true code here.
 	}
 }
 
