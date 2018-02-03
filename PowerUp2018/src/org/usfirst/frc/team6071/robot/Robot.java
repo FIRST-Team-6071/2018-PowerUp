@@ -22,7 +22,7 @@ public class Robot extends IterativeRobot {
 	final Spark mtrVertical = new Spark(4);
 	final Encoder encMtrLeft = new Encoder(5,6); // Left side gearbox encoder.
 	final Encoder encMtrRight = new Encoder(7,8); // Right side gearbox encoder.
-	final Solenoid solBox = new Solenoid(1);
+	final Solenoid solBox = new Solenoid(0);
 	final Compressor compCube = new Compressor(0);
 
 	
@@ -54,7 +54,7 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
     	double leftJoyVal = leftJoy.getRawAxis(1); // Gets the y position's value from the left joystick.
 		double rightJoyVal = rightJoy.getRawAxis(1); // Gets the x position's value from the right joystick.
-		
+		compCube.start();
 		if (leftJoyVal < 0) {
 			mtrLeft.setSpeed(leftJoyVal * leftJoyVal * -1);
 		}
@@ -68,24 +68,17 @@ public class Robot extends IterativeRobot {
 			mtrRight.setSpeed(rightJoyVal * rightJoyVal);
 		}
 		if (rightJoy.getRawButton(1)) {
-			mtrGrabLeft.setSpeed(0.2);
-			mtrGrabRight.setSpeed(0.2);
+			ExtendPusher(true);
 		}
-		if (leftJoy.getRawButton(1)) {
-			mtrGrabLeft.setSpeed(-0.2);
-			mtrGrabRight.setSpeed(-0.2);
+		else {
+			ExtendPusher(false);
 		}
-		if (rightJoy.getRawButton(5)) {
-			mtrGrabLeft.setSpeed(1);
-			mtrGrabRight.setSpeed(1);
+		if (rightJoy.getRawButton(7)) {
+			compCube.start();
 		}
-		if (rightJoy.getRawButton(3)) {
-			mtrVertical.setSpeed(1);
+		else {
+			compCube.stop();
 		}
-		if (leftJoy.getRawButton(4)) {
-			mtrVertical.setSpeed(-1);
-		}
-		
     }
 	
 	private void ExtendPusher(boolean isPushed) {
