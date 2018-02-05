@@ -55,6 +55,8 @@ public class Robot extends IterativeRobot {
     	double leftJoyVal = leftJoy.getRawAxis(1); // Gets the y position's value from the left joystick.
 		double rightJoyVal = rightJoy.getRawAxis(1); // Gets the x position's value from the right joystick.
 		
+		System.out.println(compressor.getPressureSwitchValue() + ", " + compressor.enabled());
+		
 		// Drivetrain code.
 		if (leftJoyVal < 0) {
 			mtrLeft.setSpeed(leftJoyVal * leftJoyVal * -1);
