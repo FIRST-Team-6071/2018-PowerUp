@@ -19,8 +19,8 @@ public class Robot extends IterativeRobot {
 	final Spark mtrRight = new Spark(1); // Right side gearbox controller.
 	final Encoder encMtrLeft = new Encoder(5,6); // Left side gearbox encoder.
 	final Encoder encMtrRight = new Encoder(7,8); // Right side gearbox encoder.
-	final Solenoid solBoxPush = new Solenoid(0);
-	final Compressor compressor = new Compressor(0);
+	final Solenoid solBoxPush = new Solenoid(3, 0);
+	final Compressor compressor = new Compressor(3);
 
 	
 	// Auton Variables.
@@ -47,6 +47,7 @@ public class Robot extends IterativeRobot {
 		encMtrRight.setSamplesToAverage(7);
 		
 		compressor.setClosedLoopControl(true);
+		compressor.start();
 	}	
 	
 	@Override 
