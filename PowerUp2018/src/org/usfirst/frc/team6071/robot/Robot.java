@@ -5,7 +5,13 @@
 
 package org.usfirst.frc.team6071.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -21,6 +27,14 @@ public class Robot extends IterativeRobot {
 	final Encoder encMtrRight = new Encoder(7,8); // Right side gearbox encoder.
 	final Solenoid solBoxPush = new Solenoid(3, 0);
 	final Compressor compressor = new Compressor(3);
+	final TalonSRX mtrLock = new TalonSRX(0);
+	final DigitalInput switchZero = new DigitalInput(0);
+	final int lockRot = -1000;
+	final TalonSRX mtrElevator = new TalonSRX(1);
+	final int elevStop = 0;
+	
+	private boolean hasZeroed = false;
+	private boolean lockState = false;
 
 	
 	// Auton Variables.
@@ -46,16 +60,42 @@ public class Robot extends IterativeRobot {
 		encMtrRight.setReverseDirection(true);
 		encMtrRight.setSamplesToAverage(7);
 		
+		mtrLock.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
+		mtrLock.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+		
+		mtrElevator.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
+		mtrElevator.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+		
 		compressor.setClosedLoopControl(true);
 		compressor.start();
+		
+
 	}	
+	
+	@Override
+	public void teleopInit() {
+		// if (hasZeroed == false){
+		while (!switchZero.get()) { // While not zeroed.
+			mtrLock.set(ControlMode.PercentOutput, -0.5);
+		}
+		
+		mtrLock.set(ControlMode.PercentOutput, 0);
+		mtrLock.set(ControlMode.PercentOutput, -1);
+		mtrLock.set(ControlMode.PercentOutput, 0);
+		mtrLock.getSensorCollection().setQuadraturePosition(0, 0);
+		lockState = true;
+		// }
+	}
 	
 	@Override 
     public void teleopPeriodic() {
     	double leftJoyVal = leftJoy.getRawAxis(1); // Gets the y position's value from the left joystick.
 		double rightJoyVal = rightJoy.getRawAxis(1); // Gets the x position's value from the right joystick.
+		int rotMtrLock = mtrLock.getSensorCollection().getQuadraturePosition(); 
+		int rotElevator = mtrElevator.getSensorCollection().getQuadraturePosition();
 		
-		System.out.println(compressor.getPressureSwitchValue() + ", " + compressor.enabled() + ", " + solBoxPush.get() + ", " + compressor.getClosedLoopControl());
+		System.out.println("Left drivetrain: " + encMtrLeft.getRaw());
+		System.out.println("Right drivetrain: " + encMtrRight.getRaw());
 		
 		// Drivetrain code.
 		if (leftJoyVal < 0) {
@@ -65,18 +105,58 @@ public class Robot extends IterativeRobot {
 			mtrLeft.setSpeed(leftJoyVal * leftJoyVal);
 		}
 		if (rightJoyVal < 0) {
-			mtrRight.setSpeed(rightJoyVal * rightJoyVal * -1);
+			// mtrRight.setSpeed(rightJoyVal * rightJoyVal * -1);
+			mtrLock.set(ControlMode.PercentOutput, rightJoyVal);
 		}
 		if (rightJoyVal >= 0) {
-			mtrRight.setSpeed(rightJoyVal * rightJoyVal);
+			// mtrRight.setSpeed(rightJoyVal * rightJoyVal);
+			mtrLock.set(ControlMode.PercentOutput, rightJoyVal);
 		}
 		
+		System.out.println("Rotations for mtrLock: " + rotMtrLock);
+		
 		// Box Pushing Code.
-		if (rightJoy.getRawButton(1)) {
+		if (rightJoy.getRawButton(1) || leftJoy.getRawButton(1)) {
 			solBoxPush.set(true);
 		}
 		else {
 			solBoxPush.set(false);
 		}
+		
+		// Unlock Box
+		if (rightJoy.getRawButton(2) && lockState == true){
+
+			while (rotMtrLock >= lockRot) {
+				mtrLock.set(ControlMode.PercentOutput, 0.5);
+				System.out.println("Unlocking the box.");
+				rotMtrLock = mtrLock.getSensorCollection().getQuadraturePosition();
+				System.out.println(mtrLock.getSensorCollection().getQuadraturePosition());
+				lockState = false;
+			}
+			mtrLock.set(ControlMode.PercentOutput, 0);
+
+		}
+		
+		// Lock Box
+		if (rightJoy.getRawButton(2) && lockState == false){
+
+			while (!switchZero.get()) {
+				mtrLock.set(ControlMode.PercentOutput, -0.5);
+				System.out.println("Locking the box in.");
+				rotMtrLock = mtrLock.getSensorCollection().getQuadraturePosition();
+				System.out.println(mtrLock.getSensorCollection().getQuadraturePosition());
+				lockState = true;
+			}
+			mtrLock.set(ControlMode.PercentOutput, 0);
+		}
+		
+		// Raise and lower elevator. Btn 11 & 12
+		if (rightJoy.getRawButton(11) && rotElevator < elevStop){
+			mtrElevator.set(ControlMode.PercentOutput, 0.3);
+		}
+		if (rightJoy.getRawButton(12) && rotElevator > 100){
+			mtrElevator.set(ControlMode.PercentOutput, -0.3);
+		}
+		
     }
 }
