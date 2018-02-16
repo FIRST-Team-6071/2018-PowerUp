@@ -68,9 +68,12 @@ public class Robot extends IterativeRobot {
 			mtrRight.setSpeed(rightJoyVal * rightJoyVal);
 		}
 		if (rightJoy.getRawButton(1)) {
+			// solBox.set(true);
 			ExtendPusher(true);
+			System.out.println("Attempting to extend");
 		}
 		else {
+			// solBox.set(true);
 			ExtendPusher(false);
 		}
 		if (rightJoy.getRawButton(7)) {
@@ -82,11 +85,6 @@ public class Robot extends IterativeRobot {
     }
 	
 	private void ExtendPusher(boolean isPushed) {
-		if (isPushed) {
-			solBox.set(true);
-		}
-	    if (isPushed) {
-	    	solBox.set(false);
-	    }// Put solonoid true code here.
+		solBox.set(isPushed);	
 	}
 }
