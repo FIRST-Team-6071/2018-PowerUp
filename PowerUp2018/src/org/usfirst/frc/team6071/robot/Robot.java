@@ -27,11 +27,11 @@ public class Robot extends IterativeRobot {
 	final Encoder encMtrRight = new Encoder(7,8); // Right side gearbox encoder.
 	final Solenoid solBoxPush = new Solenoid(3, 0);
 	final Compressor compressor = new Compressor(3);
-	final TalonSRX mtrLock = new TalonSRX(0);
+	final TalonSRX mtrLock = new TalonSRX(1);
 	final DigitalInput switchZero = new DigitalInput(0);
-	final int lockRot = -1000;
-	final TalonSRX mtrElevator = new TalonSRX(1);
-	final int elevStop = 0;
+	final int lockRot = 1982;
+	final TalonSRX mtrElevator = new TalonSRX(0);
+	final int elevStop = 61651981;
 	
 	private boolean hasZeroed = false;
 	private boolean lockState = false;
@@ -76,11 +76,12 @@ public class Robot extends IterativeRobot {
 	public void teleopInit() {
 		// if (hasZeroed == false){
 		while (!switchZero.get()) { // While not zeroed.
-			mtrLock.set(ControlMode.PercentOutput, -0.5);
+			mtrLock.set(ControlMode.PercentOutput, 0.1);
 		}
 		
+		
 		mtrLock.set(ControlMode.PercentOutput, 0);
-		mtrLock.set(ControlMode.PercentOutput, -1);
+		mtrLock.set(ControlMode.PercentOutput, 0.1);
 		mtrLock.set(ControlMode.PercentOutput, 0);
 		mtrLock.getSensorCollection().setQuadraturePosition(0, 0);
 		lockState = true;
@@ -96,22 +97,12 @@ public class Robot extends IterativeRobot {
 		
 		System.out.println("Left drivetrain: " + encMtrLeft.getRaw());
 		System.out.println("Right drivetrain: " + encMtrRight.getRaw());
+		System.out.println(lockState);
 		
-		// Drivetrain code.
-		if (leftJoyVal < 0) {
-			mtrLeft.setSpeed(leftJoyVal * leftJoyVal * -1);
-		}
-		if (leftJoyVal >= 0) {
-			mtrLeft.setSpeed(leftJoyVal * leftJoyVal);
-		}
-		if (rightJoyVal < 0) {
-			// mtrRight.setSpeed(rightJoyVal * rightJoyVal * -1);
-			mtrLock.set(ControlMode.PercentOutput, rightJoyVal);
-		}
-		if (rightJoyVal >= 0) {
-			// mtrRight.setSpeed(rightJoyVal * rightJoyVal);
-			mtrLock.set(ControlMode.PercentOutput, rightJoyVal);
-		}
+		mtrElevator.set(ControlMode.PercentOutput, 0.3);
+		
+		mtrLeft.setSpeed(leftJoyVal);
+		mtrRight.setSpeed(-rightJoyVal);
 		
 		System.out.println("Rotations for mtrLock: " + rotMtrLock);
 		
@@ -124,10 +115,10 @@ public class Robot extends IterativeRobot {
 		}
 		
 		// Unlock Box
-		if (rightJoy.getRawButton(2) && lockState == true){
+		if (rightJoy.getRawButton(5) && lockState == true){
 
 			while (rotMtrLock >= lockRot) {
-				mtrLock.set(ControlMode.PercentOutput, 0.5);
+				mtrLock.set(ControlMode.PercentOutput, -0.2);
 				System.out.println("Unlocking the box.");
 				rotMtrLock = mtrLock.getSensorCollection().getQuadraturePosition();
 				System.out.println(mtrLock.getSensorCollection().getQuadraturePosition());
@@ -138,10 +129,10 @@ public class Robot extends IterativeRobot {
 		}
 		
 		// Lock Box
-		if (rightJoy.getRawButton(2) && lockState == false){
+		if (rightJoy.getRawButton(5) && lockState == false){
 
 			while (!switchZero.get()) {
-				mtrLock.set(ControlMode.PercentOutput, -0.5);
+				mtrLock.set(ControlMode.PercentOutput, 0.2);
 				System.out.println("Locking the box in.");
 				rotMtrLock = mtrLock.getSensorCollection().getQuadraturePosition();
 				System.out.println(mtrLock.getSensorCollection().getQuadraturePosition());
