@@ -1,5 +1,5 @@
 /* 
- * Power Up 2018.
+  * Power Up 2018.
  * Version 0.0 
  */
 
@@ -23,8 +23,8 @@ public class Robot extends IterativeRobot {
 	final Spark mtrGrabLeft = new Spark(2);
 	final Spark mtrGrabRight = new Spark(3);
 	final Spark mtrVertical = new Spark(4);
-	final Encoder encMtrLeft = new Encoder(5,6); // Left side gearbox encoder.
-	final Encoder encMtrRight = new Encoder(7,8); // Right side gearbox encoder.
+	final Encoder encMtrLeft = new Encoder(0,9); // Left side gearbox encoder.
+	final Encoder encMtrRight = new Encoder(8,7); // Right side gearbox encoder.
 	final Compressor compCube = new Compressor(0);
 	final Solenoid solBox = new Solenoid(1);
 	
