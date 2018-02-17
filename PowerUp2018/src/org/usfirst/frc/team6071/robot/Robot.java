@@ -68,8 +68,6 @@ public class Robot extends IterativeRobot {
 		
 		compressor.setClosedLoopControl(true);
 		compressor.start();
-		
-
 	}	
 	
 	@Override
@@ -103,7 +101,15 @@ public class Robot extends IterativeRobot {
 		
 		mtrLeft.setSpeed(leftJoyVal);
 		mtrRight.setSpeed(-rightJoyVal);
+
 		
+		if (rightJoy.getRawButton(1)) {
+			solBoxPush.set(true);
+			System.out.println("Attempting to extend");
+		}
+		else {
+			solBoxPush.set(true);
+		}
 		System.out.println("Rotations for mtrLock: " + rotMtrLock);
 		
 		// Box Pushing Code.
@@ -112,6 +118,7 @@ public class Robot extends IterativeRobot {
 		}
 		else {
 			solBoxPush.set(false);
+
 		}
 		
 		// Unlock Box
@@ -140,6 +147,7 @@ public class Robot extends IterativeRobot {
 			}
 			mtrLock.set(ControlMode.PercentOutput, 0);
 		}
+
 		
 		// Raise and lower elevator. Btn 11 & 12
 		if (rightJoy.getRawButton(11) && rotElevator < elevStop){
@@ -150,4 +158,5 @@ public class Robot extends IterativeRobot {
 		}
 		
     }
+
 }
