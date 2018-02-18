@@ -1,6 +1,6 @@
 /* 
  * Power Up 2018.
- * Version 0.0 
+ * Version 0.1.3
  */
 
 package org.usfirst.frc.team6071.robot;
@@ -39,7 +39,7 @@ public class Robot extends IterativeRobot {
 	// Auton Variables.
 	public int staNumber = 1; 
 	public String arcadeLayout;
-	
+	public boolean isOverride = false;
 	
 	// TeleOp Variables. 
 	public Joystick leftJoy = new Joystick(0); // Our left joystick.
@@ -68,6 +68,55 @@ public class Robot extends IterativeRobot {
 		compressor.setClosedLoopControl(true);
 		compressor.start();
 	}	
+
+	@Override
+	public void autonomousInit() {
+		// Add station code here;
+		// Check for override;
+	}
+	
+	
+	@Override
+	public void autonomousPeriodic() {
+		if (staNumber == 1) {
+			
+		}
+		if (staNumber == 2) {
+			
+		}
+		if (staNumber == 3) {
+			
+		}
+	}
+
+	private void PassLine() {
+		
+	}
+	
+	private void LeftSwitch() {
+		
+	}
+	
+	private void LeftScale() {
+		
+	}
+	
+	private void CenterRightSwitch() {
+		
+	}
+	
+	private void CenterLeftSwitch() {
+		
+	}
+	
+	private void RightSwitch() {
+		
+	}
+
+	private void RightScale() {
+		
+	}
+}
 	
 	@Override
 	public void teleopInit() {
@@ -102,13 +151,7 @@ public class Robot extends IterativeRobot {
 		mtrRight.setSpeed(rightJoyVal);
 
 		System.out.println("Rotations for mtrLock: " + rotMtrLock);
-		
-		if (rightJoy.getRawButton(6)) {
-			encMtrLeft.reset();
-			encMtrRight.reset();
-			mtrLock.getSensorCollection().setQuadraturePosition(0, 0);
-		}
-		
+
 		// Box Pushing Code.
 		if (rightJoy.getRawButton(1) || leftJoy.getRawButton(1)) {
 			solBoxPush.set(true);
