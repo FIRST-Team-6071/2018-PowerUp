@@ -23,8 +23,8 @@ public class Robot extends IterativeRobot {
 	final Spark mtrGrabLeft = new Spark(2);
 	final Spark mtrGrabRight = new Spark(3);
 	final Spark mtrVertical = new Spark(4);
-	final Encoder encMtrLeft = new Encoder(9,8); // Left side gearbox encoder.
-	final Encoder encMtrRight = new Encoder(7,6); // Right side gearbox encoder.
+	final Encoder encMtrRight = new Encoder(8, 9, false, Encoder.EncodingType.k4X); // Left side gearbox encoder.
+	final Encoder encMtrLeft = new Encoder(6, 7, false, Encoder.EncodingType.k4X);
 	final Compressor compCube = new Compressor(0);
 	final Solenoid solBox = new Solenoid(1);
 	
@@ -124,27 +124,28 @@ public class Robot extends IterativeRobot {
 		boolean stepTwo = false;
 		boolean stepThree = false;
 		
-		int steponeLeft = -11650;
-		int steponeRight = 11757;
+		int steponeLeft = 11650;
+		int steponeRight = -11757;
 		
-		int steptwoLeft = 1461;
-		int steptwoRight = 1487;
+		int steptwoLeft = -1461;
+		int steptwoRight = -1487;
 		
-		int stepthreeLeft = -958;
-		int stepthreeRight = 786;
+		int stepthreeLeft = 958;
+		int stepthreeRight = -786;
 		
 		boolean done1 = false;
 		boolean done2 = false;
 		
 		while (stepOne){
 			// Move motors to specific spot.
-			System.out.println("Move left mtr "+encMtrRight.get()  );
-			if (encMtrRight.get() < steponeLeft) {
+			System.out.println("Step One");
+			if (encMtrLeft.get() < steponeLeft) {
 				mtrLeft.set(-0.5);
 				System.out.println("Move left mtr: " + encMtrRight.get() );
 			}
 			else {
 				done1 = true;
+				System.out.println("pt1");
 			}
 			
 			
@@ -153,6 +154,7 @@ public class Robot extends IterativeRobot {
 			} 
 			else{
 				done2 = true;
+				System.out.println("pt2");
 			}
 			
 			if (!done1 && !done2){
