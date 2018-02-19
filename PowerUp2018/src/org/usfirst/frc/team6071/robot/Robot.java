@@ -138,16 +138,19 @@ public class Robot extends IterativeRobot {
 		
 		while (stepOne){
 			// Move motors to specific spot.
-			if (encMtrLeft.get() > steponeLeft) {
+			System.out.println("Move left mtr "+encMtrRight.get()  );
+			if (encMtrRight.get() < steponeLeft) {
 				mtrLeft.set(-0.5);
+				System.out.println("Move left mtr: " + encMtrRight.get() );
 			}
 			else {
 				done1 = true;
 			}
 			
-			if (encMtrRight.get() < steponeRight) {
+			
+			if (encMtrLeft.get() < steponeRight) {
 				mtrLeft.set(0.5);
-			}
+			} 
 			else{
 				done2 = true;
 			}
@@ -160,6 +163,8 @@ public class Robot extends IterativeRobot {
 				encMtrLeft.reset();
 				encMtrRight.reset();
 			}
+			
+			
 			
 		}
 		while (stepTwo){
