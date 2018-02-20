@@ -23,8 +23,8 @@ public class Robot extends IterativeRobot {
 	final Spark mtrGrabLeft = new Spark(2);
 	final Spark mtrGrabRight = new Spark(3);
 	final Spark mtrVertical = new Spark(4);
-	final Encoder encMtrRight = new Encoder(6, 7, false, Encoder.EncodingType.k4X); // Left side gearbox encoder.
-	final Encoder encMtrLeft = new Encoder(8, 9, false, Encoder.EncodingType.k4X);
+	final Encoder encMtrLeft = new Encoder(8, 9, false, Encoder.EncodingType.k4X); // Left side gearbox encoder.
+	final Encoder encMtrRight = new Encoder(6, 7, false, Encoder.EncodingType.k4X); // Right side gearbox encoder.
 	final Compressor compCube = new Compressor(3);
 	final Solenoid solBox = new Solenoid(3, 0);
 	
@@ -50,12 +50,13 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Disable Override", autoOverrideDisable);
 		SmartDashboard.putData("Auton choices", chooser);
 		*/
+
 		encMtrLeft.setMaxPeriod(.1); // Sets the max amount of time (seconds) in which it deems the motor still moving.
 		encMtrLeft.setMinRate(10); // Sets the minimum amount of ticks in which it deems the motor stopped.
 		encMtrLeft.setDistancePerPulse(5); // Just, it's a number. I don't really get it tbh...
 		encMtrLeft.setReverseDirection(true); // Says if the encoder reads a backwards revolution as a positive or negative number.
 		encMtrLeft.setSamplesToAverage(7); // Again, don't entirely get it. So, yeah. Just make sure it's there.
-		
+	
 		encMtrRight.setMaxPeriod(.1);
 		encMtrRight.setMinRate(10);
 		encMtrRight.setDistancePerPulse(5);
@@ -130,7 +131,7 @@ public class Robot extends IterativeRobot {
 		boolean stepTwo = false;
 		boolean stepThree = false;
 		
-		int stepOneAmt = -1650;
+		int stepOneAmt = 11700;
 		int steptwoAmt = -1461;
 		int stepthreeAmt = 958;
 		
@@ -139,9 +140,9 @@ public class Robot extends IterativeRobot {
 		
 			// Move motors to specific spot.
 			System.out.println("Step One" + encMtrLeft.get());
-			if (encMtrLeft.get() > stepOneAmt && stepOne) {
-				mtrLeft.set(-0.5);
-				mtrRight.set(0.5);
+			if (encMtrLeft.get() < stepOneAmt && stepOne) {
+				mtrLeft.set(-0.4);
+				mtrRight.set(0.4);
 				System.out.println("Step One" + encMtrLeft.get()); 
 			}
 			else {
