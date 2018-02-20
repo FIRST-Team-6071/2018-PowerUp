@@ -23,10 +23,10 @@ public class Robot extends IterativeRobot {
 	final Spark mtrGrabLeft = new Spark(2);
 	final Spark mtrGrabRight = new Spark(3);
 	final Spark mtrVertical = new Spark(4);
-	final Encoder encMtrRight = new Encoder(8, 9, false, Encoder.EncodingType.k4X); // Left side gearbox encoder.
-	final Encoder encMtrLeft = new Encoder(6, 7, false, Encoder.EncodingType.k4X);
-	final Compressor compCube = new Compressor(0);
-	final Solenoid solBox = new Solenoid(1);
+	final Encoder encMtrRight = new Encoder(6, 7, false, Encoder.EncodingType.k4X); // Left side gearbox encoder.
+	final Encoder encMtrLeft = new Encoder(8, 9, false, Encoder.EncodingType.k4X);
+	final Compressor compCube = new Compressor(3);
+	final Solenoid solBox = new Solenoid(3, 0);
 	
 	// Auton Variables.
 	public int staNumber = 1;
@@ -61,12 +61,17 @@ public class Robot extends IterativeRobot {
 		encMtrRight.setDistancePerPulse(5);
 		encMtrRight.setReverseDirection(true);
 		encMtrRight.setSamplesToAverage(7);
-} 
+	} 
 	
+	public void disabledPeriodic() {
+		System.out.println("Josh is disabled.");
+	}
 	
 
 	@Override
 	public void autonomousInit() {
+		encMtrLeft.reset();
+		encMtrRight.reset();
 		/*
 		ds = DriverStation.getInstance();
 		
@@ -81,12 +86,13 @@ public class Robot extends IterativeRobot {
 			System.out.println("Ran the Finally statement for auto.");
 		}
 		*/
-		LeftSwitch();
+
 	}
 	
 	
 	@Override
 	public void autonomousPeriodic() {
+		LeftSwitch();
 		/*
 		if (orChosenAuto == autoOverrideDisable) { // If override is disabled, run FMS code.
 			
@@ -124,54 +130,37 @@ public class Robot extends IterativeRobot {
 		boolean stepTwo = false;
 		boolean stepThree = false;
 		
-		int steponeLeft = 11650;
-		int steponeRight = -11757;
-		
-		int steptwoLeft = -1461;
-		int steptwoRight = -1487;
-		
-		int stepthreeLeft = 958;
-		int stepthreeRight = -786;
+		int stepOneAmt = -1650;
+		int steptwoAmt = -1461;
+		int stepthreeAmt = 958;
 		
 		boolean done1 = false;
 		boolean done2 = false;
 		
-		while (stepOne){
 			// Move motors to specific spot.
-			System.out.println("Step One");
-			if (encMtrLeft.get() < steponeLeft) {
+			System.out.println("Step One" + encMtrLeft.get());
+			if (encMtrLeft.get() > stepOneAmt && stepOne) {
 				mtrLeft.set(-0.5);
-				System.out.println("Move left mtr: " + encMtrRight.get() );
+				mtrRight.set(0.5);
+				System.out.println("Step One" + encMtrLeft.get()); 
 			}
 			else {
-				done1 = true;
-				System.out.println("pt1");
-			}
-			
-			
-			if (encMtrLeft.get() < steponeRight) {
-				mtrLeft.set(0.5);
-			} 
-			else{
-				done2 = true;
-				System.out.println("pt2");
-			}
-			
-			if (!done1 && !done2){
+				System.out.println("Step One Complete.");
+				mtrLeft.set(-0);
+				mtrRight.set(0);
+				/*
 				stepOne = false;
 				stepTwo = true;
 				done1 = false;
 				done2 = false;
 				encMtrLeft.reset();
 				encMtrRight.reset();
+				*/
 			}
-			
-			
-			
-		}
-		while (stepTwo){
+		
+		/*while (stepTwo){
 			// Move motors to specific spot.
-			if (encMtrLeft.get() < steptwoLeft) {
+			if (encMtrLeft.get() < stepTeoAmt{
 				mtrLeft.set(0.5);
 			}
 			else {
@@ -215,6 +204,7 @@ public class Robot extends IterativeRobot {
 				encMtrRight.reset();
 			}
 		}
+		*/
 	}
 	
 	private void LeftScale() {
