@@ -1,6 +1,8 @@
 /* 
+
  * Power Up 2018.
  * Version 0.1.3
+
  */
 
 package org.usfirst.frc.team6071.robot;
@@ -9,7 +11,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -17,6 +18,9 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot {
 	
@@ -34,16 +38,33 @@ public class Robot extends IterativeRobot {
 	final int elevStop = -23400;
 	
 	private boolean lockState = false;
-
 	
 	// Auton Variables.
 	public int staNumber = 1; 
 	public String arcadeLayout;
 	public boolean isOverride = false;
+	public DriverStation ds;
+	public String orChosenAuto;
+	
+	//Auton Choices
+	SendableChooser<String> chooser = new SendableChooser<>();
+	final String autoOverrideDisable = "Don't override";
+	boolean stepOne = true;
+	boolean stepTwo = false;
+	boolean stepThree = false;
+	boolean isDone = false;
 	
 	// TeleOp Variables. 
+
+	public Joystick leftJoy = new Joystick(0);
+	public Joystick rightJoy = new Joystick(1);
+	
+	public void disabledInit() {
+		System.out.println("Josh is disabled.");
+	}
 	public Joystick leftJoy = new Joystick(0); // Our left joystick.
 	public Joystick rightJoy = new Joystick(1); // Our right joystick.
+
 	
 	@Override
 	public void robotInit() {
@@ -71,22 +92,55 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousInit() {
-		// Add station code here;
-		// Check for override;
+		encMtrLeft.reset();
+		encMtrRight.reset();
+		/*
+		ds = DriverStation.getInstance();
+		
+		try {
+		orChosenAuto = chooser.getSelected(); // See if the user is trying to override.
+		}
+		catch (Exception NullPointerException) {
+			System.out.println("AUTO HAS FAILED. NullPointerException! Check what you have selected...");
+		}
+		finally {
+			// autoSelected = autoCenter;
+			System.out.println("Ran the Finally statement for auto.");
+		}
+		*/
+
 	}
 	
 	
 	@Override
 	public void autonomousPeriodic() {
-		if (staNumber == 1) {
+		LeftSwitch();
+		/*
+		if (orChosenAuto == autoOverrideDisable) { // If override is disabled, run FMS code.
+			
+			if (ds.isFMSAttached()){ // Run this code if you are at comps and connected to the field.
+				System.out.println("The field layout is: " + arcadeLayout);
+				staNumber = ds.getLocation();
+				if (staNumber == 1) {
+					System.out.println("You are at station one.");
+				}
+				if (staNumber == 2) {
+					System.out.println("You are at station two.");
+				}
+				if (staNumber == 3) {
+					System.out.println("You are at station three.");
+				}
+			}
+			
+			else {
+				System.out.println("ERROR: YOU ARE NOT CONNECTED TO FMS. PLEASE OVERRIDE!");
+			}
 			
 		}
-		if (staNumber == 2) {
-			
+		else { // If override is enabled, run the selected option.
+			// Setup override options.
 		}
-		if (staNumber == 3) {
-			
-		}
+		*/
 	}
 
 	private void PassLine() {
@@ -94,6 +148,65 @@ public class Robot extends IterativeRobot {
 	}
 	
 	private void LeftSwitch() {
+		int stepOneAmt = -2650;
+		int stepTwoAmt = 200;
+		int stepThreeAmt = -300;
+		
+		System.out.println(stepOne);
+		System.out.println(stepTwo);
+		System.out.println(stepThree);
+		
+			// Move motors to specific spot.
+			if (!stepTwo && !stepThree) { 
+				if (encMtrLeft.get() > stepOneAmt && stepOne) {
+					mtrLeft.set(0.43);
+					mtrRight.set(-0.4);
+					System.out.println("Step One" + encMtrLeft.get() + "= " + stepOneAmt); 
+				}
+				else {
+					System.out.println("Step One Complete.");
+					mtrLeft.set(-0);
+					mtrRight.set(0);
+					stepOne = false;
+					stepTwo = true;
+					encMtrLeft.reset();
+					encMtrRight.reset();
+				}
+			}
+			else if (!stepOne && !stepThree) {
+				if (!isDone) {
+					if (encMtrLeft.get() < stepTwoAmt && stepTwo) {
+						mtrLeft.set(0.43);
+						mtrRight.set(0.4);
+						System.out.println("Step Two " + encMtrLeft.get()); 
+					}
+					else {
+						System.out.println("Step Two Complete.");
+						mtrLeft.set(-0);
+						mtrRight.set(0);
+						stepTwo = false;
+						stepThree = true;
+						encMtrLeft.reset();
+						encMtrRight.reset();
+					}
+				}
+			}
+			else if (!stepOne && !stepTwo && !isDone)
+			if (encMtrLeft.get() > stepThreeAmt && stepThree) {
+				mtrLeft.set(0.43);
+				mtrRight.set(-0.4);
+				System.out.println("Step Three " + encMtrLeft.get()); 
+			}
+			else {
+				System.out.println("Step Three Complete.");
+				mtrLeft.set(-0);
+				mtrRight.set(0);
+				stepThree = false;
+				isDone = true;
+				encMtrLeft.reset();
+				encMtrRight.reset();
+			}
+		
 		
 	}
 	
@@ -116,7 +229,6 @@ public class Robot extends IterativeRobot {
 	private void RightScale() {
 		
 	}
-}
 	
 	@Override
 	public void teleopInit() {
@@ -204,3 +316,4 @@ public class Robot extends IterativeRobot {
     }
 
 }
+
