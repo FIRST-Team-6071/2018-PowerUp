@@ -140,26 +140,28 @@ public class Robot extends IterativeRobot {
 		System.out.println(stepThree);
 		
 			// Move motors to specific spot.
-			if (encMtrLeft.getRaw() > stepOneAmt && stepOne) {
-				mtrLeft.set(0.43);
-				mtrRight.set(-0.4);
-				System.out.println("Step One" + encMtrLeft.getRaw()); 
-			}
-			else {
-				System.out.println("Step One Complete.");
-				mtrLeft.set(-0);
-				mtrRight.set(0);
-				stepOne = false;
-				stepTwo = true;
-				encMtrLeft.reset();
-				encMtrRight.reset();
+			if (!stepTwo && !stepThree) { 
+				if (encMtrLeft.get() > stepOneAmt && stepOne) {
+					mtrLeft.set(0.43);
+					mtrRight.set(-0.4);
+					System.out.println("Step One" + encMtrLeft.get() + "= " + stepOneAmt); 
+				}
+				else {
+					System.out.println("Step One Complete.");
+					mtrLeft.set(-0);
+					mtrRight.set(0);
+					stepOne = false;
+					stepTwo = true;
+					encMtrLeft.reset();
+					encMtrRight.reset();
+				}
 			}
 			
 			if (!stepOne && !stepThree) {
-				if (encMtrLeft.getRaw() > stepTwoAmt && stepTwo) {
+				if (encMtrLeft.get() > stepTwoAmt && stepTwo) {
 					mtrLeft.set(0.43);
 					mtrRight.set(0.4);
-					System.out.println("Step Two " + encMtrLeft.getRaw()); 
+					System.out.println("Step Two " + encMtrLeft.get()); 
 				}
 				else {
 					System.out.println("Step Two Complete.");
@@ -173,10 +175,10 @@ public class Robot extends IterativeRobot {
 			}
 			
 			if (!stepOne && !stepTwo)
-			if (encMtrLeft.getRaw() > stepThreeAmt && stepThree) {
+			if (encMtrLeft.get() > stepThreeAmt && stepThree) {
 				mtrLeft.set(0.43);
 				mtrRight.set(0.4);
-				System.out.println("Step Three " + encMtrLeft.getRaw()); 
+				System.out.println("Step Three " + encMtrLeft.get()); 
 			}
 			else {
 				System.out.println("Step Three Complete.");
