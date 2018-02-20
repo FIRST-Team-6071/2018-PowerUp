@@ -18,8 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 	
 	// Common Variables
-	final Spark mtrLeft = new Spark(0); // Left side gearbox controller.
-	final Spark mtrRight = new Spark(1); // Right side gearbox controller.
+	final Spark mtrLeft = new Spark(1); // Left side gearbox controller.
+	final Spark mtrRight = new Spark(0); // Right side gearbox controller.
 	final Spark mtrGrabLeft = new Spark(2);
 	final Spark mtrGrabRight = new Spark(3);
 	final Spark mtrVertical = new Spark(4);
@@ -64,7 +64,7 @@ public class Robot extends IterativeRobot {
 		encMtrRight.setSamplesToAverage(7);
 	} 
 	
-	public void disabledPeriodic() {
+	public void disabledInit() {
 		System.out.println("Josh is disabled.");
 	}
 	
@@ -131,81 +131,63 @@ public class Robot extends IterativeRobot {
 		boolean stepTwo = false;
 		boolean stepThree = false;
 		
-		int stepOneAmt = 11700;
-		int steptwoAmt = -1461;
-		int stepthreeAmt = 958;
+		int stepOneAmt = -11700;
+		int stepTwoAmt = -1461;
+		int stepThreeAmt = -958;
 		
-		boolean done1 = false;
-		boolean done2 = false;
+		System.out.println(stepOne);
+		System.out.println(stepTwo);
+		System.out.println(stepThree);
 		
 			// Move motors to specific spot.
-			System.out.println("Step One" + encMtrLeft.get());
-			if (encMtrLeft.get() < stepOneAmt && stepOne) {
-				mtrLeft.set(-0.4);
-				mtrRight.set(0.4);
-				System.out.println("Step One" + encMtrLeft.get()); 
+			if (encMtrLeft.getRaw() > stepOneAmt && stepOne) {
+				mtrLeft.set(0.43);
+				mtrRight.set(-0.4);
+				System.out.println("Step One" + encMtrLeft.getRaw()); 
 			}
 			else {
 				System.out.println("Step One Complete.");
 				mtrLeft.set(-0);
 				mtrRight.set(0);
-				/*
 				stepOne = false;
 				stepTwo = true;
-				done1 = false;
-				done2 = false;
 				encMtrLeft.reset();
 				encMtrRight.reset();
-				*/
+			}
+			
+			if (!stepOne && !stepThree) {
+				if (encMtrLeft.getRaw() > stepTwoAmt && stepTwo) {
+					mtrLeft.set(0.43);
+					mtrRight.set(0.4);
+					System.out.println("Step Two " + encMtrLeft.getRaw()); 
+				}
+				else {
+					System.out.println("Step Two Complete.");
+					mtrLeft.set(-0);
+					mtrRight.set(0);
+					stepTwo = false;
+					stepThree = true;
+					encMtrLeft.reset();
+					encMtrRight.reset();
+				}
+			}
+			
+			if (!stepOne && !stepTwo)
+			if (encMtrLeft.getRaw() > stepThreeAmt && stepThree) {
+				mtrLeft.set(0.43);
+				mtrRight.set(0.4);
+				System.out.println("Step Three " + encMtrLeft.getRaw()); 
+			}
+			else {
+				System.out.println("Step Three Complete.");
+				mtrLeft.set(-0);
+				mtrRight.set(0);
+				stepThree = false;
+				encMtrLeft.reset();
+				encMtrRight.reset();
 			}
 		
-		/*while (stepTwo){
-			// Move motors to specific spot.
-			if (encMtrLeft.get() < stepTeoAmt{
-				mtrLeft.set(0.5);
-			}
-			else {
-				done1 = true;
-			}
-			if (encMtrRight.get() < steptwoRight) {
-				mtrLeft.set(0.5);
-			}
-			else{
-				done2 = true;
-			}
-			if (!done1 && !done2){
-				stepTwo = false;
-				stepThree = true;
-				done1 = false;
-				done2 = false;
-				encMtrLeft.reset();
-				encMtrRight.reset();
-			}
-		}		
-		while (stepThree){
-			// Move motors to specific spot.
-			if (encMtrLeft.get() > stepthreeLeft) {
-				mtrLeft.set(0.5);
-			}
-			else {
-				done1 = true;
-			}
-			if (encMtrRight.get() < stepthreeRight) {
-				mtrLeft.set(0.5);
-			}
-			else {
-				done2 = true;
-			}
-			if (!done1 && !done2){
-				stepOne = false;
-				stepTwo = true;
-				done1 = false;
-				done2 = false;
-				encMtrLeft.reset();
-				encMtrRight.reset();
-			}
-		}
-		*/
+		
 	}
 	
 	private void LeftScale() {
