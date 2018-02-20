@@ -38,6 +38,10 @@ public class Robot extends IterativeRobot {
 	//Auton Choices
 	SendableChooser<String> chooser = new SendableChooser<>();
 	final String autoOverrideDisable = "Don't override";
+	boolean stepOne = true;
+	boolean stepTwo = false;
+	boolean stepThree = false;
+	boolean isDone = false;
 	
 	// TeleOp Variables. 
 	public Joystick leftJoy = new Joystick(0);
@@ -127,13 +131,9 @@ public class Robot extends IterativeRobot {
 	}
 	
 	private void LeftSwitch() {
-		boolean stepOne = true;
-		boolean stepTwo = false;
-		boolean stepThree = false;
-		
-		int stepOneAmt = -11700;
-		int stepTwoAmt = -1461;
-		int stepThreeAmt = -958;
+		int stepOneAmt = -2650;
+		int stepTwoAmt = 200;
+		int stepThreeAmt = -300;
 		
 		System.out.println(stepOne);
 		System.out.println(stepTwo);
@@ -156,28 +156,28 @@ public class Robot extends IterativeRobot {
 					encMtrRight.reset();
 				}
 			}
-			
-			if (!stepOne && !stepThree) {
-				if (encMtrLeft.get() > stepTwoAmt && stepTwo) {
-					mtrLeft.set(0.43);
-					mtrRight.set(0.4);
-					System.out.println("Step Two " + encMtrLeft.get()); 
-				}
-				else {
-					System.out.println("Step Two Complete.");
-					mtrLeft.set(-0);
-					mtrRight.set(0);
-					stepTwo = false;
-					stepThree = true;
-					encMtrLeft.reset();
-					encMtrRight.reset();
+			else if (!stepOne && !stepThree) {
+				if (!isDone) {
+					if (encMtrLeft.get() < stepTwoAmt && stepTwo) {
+						mtrLeft.set(0.43);
+						mtrRight.set(0.4);
+						System.out.println("Step Two " + encMtrLeft.get()); 
+					}
+					else {
+						System.out.println("Step Two Complete.");
+						mtrLeft.set(-0);
+						mtrRight.set(0);
+						stepTwo = false;
+						stepThree = true;
+						encMtrLeft.reset();
+						encMtrRight.reset();
+					}
 				}
 			}
-			
-			if (!stepOne && !stepTwo)
+			else if (!stepOne && !stepTwo && !isDone)
 			if (encMtrLeft.get() > stepThreeAmt && stepThree) {
 				mtrLeft.set(0.43);
-				mtrRight.set(0.4);
+				mtrRight.set(-0.4);
 				System.out.println("Step Three " + encMtrLeft.get()); 
 			}
 			else {
@@ -185,6 +185,7 @@ public class Robot extends IterativeRobot {
 				mtrLeft.set(-0);
 				mtrRight.set(0);
 				stepThree = false;
+				isDone = true;
 				encMtrLeft.reset();
 				encMtrRight.reset();
 			}
