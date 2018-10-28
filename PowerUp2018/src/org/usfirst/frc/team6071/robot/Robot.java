@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -42,6 +43,9 @@ public class Robot extends IterativeRobot {
 	public String arcadeLayout;
 	public boolean isOverride = false;
 	public String orChosenAuto;
+	
+	public Timer timeAuto = new Timer();
+	public double autoMaxTime = 1.75D;
 	
 	//Auton Choices
 	SendableChooser<String> chooser = new SendableChooser<>();
@@ -79,27 +83,19 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		encMtrLeft.reset();
 		encMtrRight.reset();
-		/*
-		ds = DriverStation.getInstance();
-		
-		try {
-		orChosenAuto = chooser.getSelected(); // See if the user is trying to override.
-		}
-		catch (Exception NullPointerException) {
-			System.out.println("AUTO HAS FAILED. NullPointerException! Check what you have selected...");
-		}
-		finally {
-			// autoSelected = autoCenter;
-			System.out.println("Ran the Finally statement for auto.");
-		}
-		*/
-
+		timeAuto.start();
 	}
-	
 	
 	@Override
 	public void autonomousPeriodic() {
-		
+		if(timeAuto.get() < autoMaxTime) {
+			mtrLeft.set(50);
+			mtrRight.set(-50);
+		}
+		else {
+			mtrRight.set(0);
+			mtrLeft.set(0);
+		}
 	}
 
 	
@@ -123,12 +119,12 @@ public class Robot extends IterativeRobot {
 		
 		// Box input
 		if(leftJoy.getRawButton(1)){
-			mtrRightBox.set(50);
-			mtrLeftBox.set(50);
+			mtrRightBox.set(25);
+			mtrLeftBox.set(25);
 		}
 		else if(rightJoy.getRawButton(1)){
-			mtrRightBox.set(-50);
-			mtrLeftBox.set(-50);;
+			mtrRightBox.set(-25);
+			mtrLeftBox.set(-25);;
 		}
 		else{
 			mtrRightBox.set(0);
@@ -136,10 +132,10 @@ public class Robot extends IterativeRobot {
 		}
 		
 		//Box height
-		if(leftJoy.getRawButton(5)) {
+		if(leftJoy.getRawButton(6)) {
 			mtrArmRaise.set(ControlMode.PercentOutput, 50);
 		}		
-		else if(leftJoy.getRawButton(3)) {
+		else if(leftJoy.getRawButton(4)) {
 			mtrArmRaise.set(ControlMode.PercentOutput, -50);
 		}
 		else {	
@@ -147,10 +143,10 @@ public class Robot extends IterativeRobot {
 		}
 		
 		//Elevator height
-		if(leftJoy.getRawButton(6)) {
+		if(rightJoy.getRawButton(5)) {
 			mtrElev.set(ControlMode.PercentOutput, 50);
 		}
-		else if(leftJoy.getRawButton(4)) {
+		else if(rightJoy.getRawButton(3)) {
 			mtrElev.set(ControlMode.PercentOutput, -50);
 		}
 		else{
